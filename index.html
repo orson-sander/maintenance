@@ -1,145 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Issues</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: #fff;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Difficulties</title>
 
-        .container {
-            text-align: center;
-            padding: 20px;
-            max-width: 600px;
-        }
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
 
-        .error-icon {
-            font-size: 4rem;
-            color: #FF9900;
-            margin-bottom: 20px;
-            animation: pulse 2s ease-in-out infinite;
-        }
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #fff;
-        }
+    body, html {
+      height:100%;
+      background:#0f172a; /* Deep dark blue */
+      color:#ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      overflow:hidden;
+    }
 
-        .subtitle {
-            font-size: 1.2rem;
-            color: #ccc;
-            margin-bottom: 30px;
-        }
+    .container {
+      text-align:center;
+      position:relative;
+      z-index:2;
+    }
 
-        .loading {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #333;
-            border-top: 4px solid #FF9900;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
+    /* === BIGGER LOGO === */
+    .logo {
+      width: 200px;           /* ← Bigger logo */
+      height: auto;
+      margin-bottom: 2.2rem;  /* More space below */
+      filter: brightness(0) invert(1); /* Forces white */
+    }
 
-        .retry-btn {
-            background: #FF9900;
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            font-size: 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+    h1 {
+      font-family: 'Bungee', cursive;
+      font-size: 3.8rem;
+      font-weight: 400;
+      margin-bottom: 0.8rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
 
-        .retry-btn:hover {
-            background: #e68900;
-        }
+    /* Spotlight beam */
+    .spotlight {
+      position:absolute;
+      top:0;
+      left:-60%;
+      width:120%;
+      height:100%;
+      background:linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.4) 48%,
+        rgba(255,255,255,0.6) 50%,
+        rgba(255,255,255,0.4) 52%,
+        transparent 100%
+      );
+      pointer-events:none;
+      animation: sweep 5s ease-in-out infinite;
+      z-index:1;
+    }
 
-        .help-link {
-            color: #FF9900;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
+    @keyframes sweep {
+      0%   { left:-60%; }
+      50%  { left:100%; }
+      100% { left:-60%; }
+    }
 
-        .help-link:hover {
-            text-decoration: underline;
-        }
+    /* Messages */
+    .slider {
+      position:relative;
+      height:2rem;
+      overflow:hidden;
+      margin-top:0.5rem;
+    }
 
-        .background-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
+    .slide {
+      position:absolute;
+      top:0;
+      left:100%;
+      width:100%;
+      font-size:1.2rem;
+      font-weight:500;
+      white-space:nowrap;
+      opacity:0;
+      transform:translateX(20px);
+      animation: slideIn 9s infinite;
+    }
 
-        .line {
-            position: absolute;
-            height: 1px;
-            background: rgba(255, 153, 0, 0.1);
-            animation: drift 20s linear infinite;
-        }
+    .slide:nth-child(1) { animation-delay:0s; }
+    .slide:nth-child(2) { animation-delay:3s; }
+    .slide:nth-child(3) { animation-delay:6s; }
 
-        .line:nth-child(1) { top: 10%; width: 50%; left: -50%; animation-delay: 0s; }
-        .line:nth-child(2) { top: 30%; width: 70%; left: -70%; animation-delay: -5s; }
-        .line:nth-child(3) { top: 50%; width: 60%; left: -60%; animation-delay: -10s; }
-        .line:nth-child(4) { top: 70%; width: 80%; left: -80%; animation-delay: -15s; }
-        .line:nth-child(5) { top: 90%; width: 40%; left: -40%; animation-delay: -20s; }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes drift {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(200%); }
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .subtitle { font-size: 1rem; }
-            .error-icon { font-size: 3rem; }
-        }
-    </style>
+    @keyframes slideIn {
+      0%   { opacity:0; transform:translateX(20px); left:100%; }
+      10%, 33% { opacity:1; transform:translateX(0); left:0; }
+      36%  { opacity:0; transform:translateX(-20px); left:0; }
+      100% { opacity:0; transform:translateX(-20px); left:0; }
+    }
+  </style>
 </head>
 <body>
-    <div class="background-lines">
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
+
+  <div class="spotlight"></div>
+
+  <div class="container">
+    
+    <!-- === BIG LOGO: REPLACE THIS SRC === -->
+    <img src="images/logo.png" alt="Your Logo" class="logo">
+    <!-- ↑ Paste your real logo URL here ↑ -->
+
+    <h1>TECHNICAL DIFFICULTIES</h1>
+
+    <div class="slider">
+      <div class="slide">Please stand by… Page has been blocked!</div>
+      <div class="slide">Were working on getting this fixed!.</div>
+      <div class="slide">Back in a flash!</div>
     </div>
-    <div class="container">
-        <div class="error-icon">⚠️</div>
-        <h1>Connection Issues</h1>
-        <p class="subtitle">Page has been blocked. Currently under maintenance.</p>
-        <div class="loading"></div>
-        <p style="color: #ccc; font-size: 0.9rem;">Please try again later.</p>
-        <button class="retry-btn" onclick="location.reload()">Retry</button>
-        <p style="margin-top: 20px;"><a href="#" class="help-link">For more help, visit our request page</a></p>
-    </div>
+  </div>
+
 </body>
 </html>
